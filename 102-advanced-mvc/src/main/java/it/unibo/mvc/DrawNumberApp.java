@@ -1,6 +1,5 @@
 package it.unibo.mvc;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -8,10 +7,7 @@ import java.util.List;
 /**
  */
 public final class DrawNumberApp implements DrawNumberViewObserver {
-    private static final int MIN = 0;
-    private static final int MAX = 100;
-    private static final int ATTEMPTS = 10;
-
+    
     private final DrawNumber model;
     private final List<DrawNumberView> views;
 

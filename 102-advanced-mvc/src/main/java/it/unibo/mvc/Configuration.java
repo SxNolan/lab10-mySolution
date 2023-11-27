@@ -1,19 +1,41 @@
 package it.unibo.mvc;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * Encapsulates the concept of configuration.
  */
 public final class Configuration {
 
-    private final int max; 
-    private final int min;
-    private final int attempts;
+    private int max;
+    private int min;
+    private int attempts;
+    private BufferedReader br;
 
-    private Configuration(final int max, final int min, final int attempts) {
-        this.max = max;
-        this.min = min;
-        this.attempts = attempts;
+    /**
+     * Constructor modified for Configuration; takes the infos by a res file in YML format.
+     */
+    public Configuration() {
+        try {
+            String[] regexReturn; 
+            br = new BufferedReader(new FileReader("lab10-mySolution/102-advanced-mvc/src/main/resources/config.yml"));
+            try {
+                regexReturn = br.readLine().split(": ");
+                this.min = Integer.parseInt(regexReturn[1]);
+                regexReturn = br.readLine().split(": ");
+                this.max = Integer.parseInt(regexReturn[1]);
+                regexReturn = br.readLine().split(": ");
+                this.attempts = Integer.parseInt(regexReturn[1]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        
     }
 
     /**
@@ -44,71 +66,5 @@ public final class Configuration {
         return attempts > 0 && min < max;
     }
 
-    /**
-     * Pattern builder: used here because:
-     * 
-     * - all the parameters of the Configuration class have a default value, which
-     * means that we would like to have all the possible combinations of
-     * constructors (one with three parameters, three with two parameters, three
-     * with a single parameter), which are way too many and confusing to use
-     * 
-     * - moreover, it would be impossible to provide all of them, because they are
-     * all of the same type, and only a single constructor can exist with a given
-     * list of parameter types.
-     * 
-     * - the Configuration class has three parameters of the same type, and it is
-     * unclear to understand, in a call to its contructor, which is which. By using
-     * the builder, we emulate the so-called "named arguments".
-     * 
-     */
-    public static class Builder {
-
-        private static final int MIN = 0;
-        private static final int MAX = 100;
-        private static final int ATTEMPTS = 10;
-
-        private int min = MIN;
-        private int max = MAX;
-        private int attempts = ATTEMPTS;
-        private boolean consumed = false;
-
-        /**
-         * @param min the minimum value
-         * @return this builder, for method chaining
-         */
-        public Builder setMin(final int min) {
-            this.min = min;
-            return this;
-        }
-
-        /**
-         * @param max the maximum value
-         * @return this builder, for method chaining
-         */
-        public Builder setMax(final int max) {
-            this.max = max;
-            return this;
-        }
-
-        /**
-         * @param attempts the attempts count
-         * @return this builder, for method chaining
-         */
-        public Builder setAttempts(final int attempts) {
-            this.attempts = attempts;
-            return this;
-        }
-
-        /**
-         * @return a configuration
-         */
-        public final Configuration build() {
-            if (consumed) {
-                throw new IllegalStateException("The builder can only be used once");
-            }
-            consumed = true;
-            return new Configuration(max, min, attempts);
-        }
-    }
 }
 

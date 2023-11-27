@@ -1,6 +1,10 @@
 package it.unibo.mvc;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Random;
+import java.util.StringTokenizer;
 
 /**
  *
@@ -13,14 +17,22 @@ public final class DrawNumberImpl implements DrawNumber {
     private final int attempts;
     private int remainingAttempts;
     private final Random random = new Random();
-
+    private String relativePath = "src/main/resources/config.yml";
+    BufferedReader myBufferedReader;
     /**
+     * @throws IOException
      * @throws IllegalStateException if the configuration is not consistent
      */
-    public DrawNumberImpl(final int min, final int max, final int attempts) {
-        this.min = min;
-        this.max = max;
-        this.attempts = attempts;
+    public DrawNumberImpl() throws IOException {
+        myBufferedReader = new BufferedReader(new FileReader(relativePath));
+        String[] dividedString;
+        dividedString = myBufferedReader.readLine().split(":");
+        this.min = Integer.parseInt(dividedString[1]);
+        dividedString = myBufferedReader.readLine().split(":");
+        this.max = Integer.parseInt(dividedString[1]);
+        dividedString = myBufferedReader.readLine().split(":");
+        this.attempts = Integer.parseInt(dividedString[1]);
+        myBufferedReader.close();
         this.reset();
     }
 

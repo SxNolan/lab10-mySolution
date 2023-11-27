@@ -61,8 +61,7 @@ public final class LambdaUtilities {
     public static <T> List<Optional<T>> optFilter(final List<T> list, final Predicate<T> pre) {
         final List<Optional<T>> l = new ArrayList<>();
         list.forEach(t -> {
-            Optional<T> predicateUsed = Optional.of(t);
-            predicateUsed = predicateUsed.filter(pre);
+            Optional<T> predicateUsed = Optional.of(t).filter(pre);
             l.add(predicateUsed);
         });
         /*

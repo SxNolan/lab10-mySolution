@@ -1,6 +1,7 @@
 package it.unibo.mvc;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,22 +10,26 @@ import java.util.List;
 public final class DrawNumberApp implements DrawNumberViewObserver {
     
     private final DrawNumber model;
-    private final List<DrawNumberView> views;
+    private List<DrawNumberView> views;
 
     /**
      * @param views
      *            the views to attach
      * @throws IOException
      */
-    public DrawNumberApp(final DrawNumberView... views) throws IOException {
+    public DrawNumberApp() throws IOException {
+        views = new ArrayList<>();
         /*
          * Side-effect proof
          */
-        this.views = Arrays.asList(Arrays.copyOf(views, views.length));
-        for (final DrawNumberView view: views) {
-            view.setObserver(this);
-            view.start();
-        }
+        views.add(new DrawNumberViewImpl());
+        views.add(new DrawNumberViewImpl());
+        
+        //TO BE COMPLETED HERE
+
+        views.forEach(elem -> {
+            elem.start();
+        });
         this.model = new DrawNumberImpl();
     }
 
@@ -64,7 +69,7 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
      * @throws IOException
      */
     public static void main(final String... args) throws IOException {
-        new DrawNumberApp(new DrawNumberViewImpl());
+        new DrawNumberApp();
     }
 
 }

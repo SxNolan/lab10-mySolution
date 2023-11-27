@@ -58,10 +58,16 @@ public final class LambdaUtilities {
      *         otherwise.
      */
     public static <T> List<Optional<T>> optFilter(final List<T> list, final Predicate<T> pre) {
+        final List<Optional<T>> l = new ArrayList<>();
+        list.forEach(t -> {
+            Optional<T> predicateUsed = Optional.of(t);
+            predicateUsed = predicateUsed.filter(pre);
+            l.add(predicateUsed);
+        });
         /*
          * Suggestion: consider Optional.filter
          */
-        return null;
+        return l;
     }
 
     /**
@@ -80,6 +86,10 @@ public final class LambdaUtilities {
         /*
          * Suggestion: consider Map.merge
          */
+        Map<R, Set<T>> m = new HashMap<>();
+        list.forEach(t -> {
+            
+        });
         return null;
     }
 
